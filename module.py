@@ -1,8 +1,7 @@
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from PyQt5.QtSql import *
-from Helper import StyledItemDelegate
+from helper import StyledItemDelegate
+
 
 class Module(QDialog):
     changed = pyqtSignal(str)
@@ -11,12 +10,11 @@ class Module(QDialog):
     def color(self):
         return str(self.combo.currentText())
 
-    # właśwość text – wpisany tytuł
     @color.setter
-    def color(self, newColor):
-        self.combo.setCurrentText(newColor)
+    def color(self, new_color):
+        self.combo.setCurrentText(new_color)
 
-    def closeEvent(self, event):   #zablokowanie możliwości zamkniecia
+    def closeEvent(self, event):
         event.ignore()
 
     def help(self):
@@ -24,16 +22,15 @@ class Module(QDialog):
 
     def __init__(self, parent=None, title=""):
         super(Module, self).__init__(parent)
-        mainLayout = QVBoxLayout(self)
-        kolory = ['red', 'yellow', 'green', 'blue']
+        main_layout = QVBoxLayout(self)
+        colors = ['red', 'yellow', 'green', 'blue']
         self.combo = QComboBox()
-        self.combo.addItems(kolory)
+        self.combo.addItems(colors)
         self.combo.setCurrentText('green')
         self.combo.setItemDelegate(StyledItemDelegate())
         self.combo.currentTextChanged.connect(self.help)
-        # self.combo.setModel(model)
 
-        mainLayout.addWidget(self.combo)
+        main_layout.addWidget(self.combo)
         self.setWindowTitle('Ustaw kolor okna głównego')
         self.resize(350, 100)
         self.show()
