@@ -4,7 +4,7 @@ from PyQt5.QtGui import *
 
 from module import Module
 from module2 import KoloDialog
-from module3 import FaceDialog
+from module3 import IconDialog
 
 class Dialog(QMainWindow):
     fileName = ""
@@ -18,13 +18,14 @@ class Dialog(QMainWindow):
         self.color_menu = QAction("Kolor okna głównego", self)
         self.outside_circle =100
         self.inside_circle = 50
+        self.actual_picture = 'happyface.jpg'
         self.initUI()
 
     def initUI(self):
         self.setWindowTitle('Dialogi')
         self.setGeometry(400, 400, 800, 400)
         grid = QGridLayout()
-        self.setWindowIcon(QIcon('happyface.jpg'))
+        self.setWindowIcon(QIcon(self.actual_picture))
         self.setCentralWidget(self.bigWidget)
         palette = QPalette()
         palette.setColor(QPalette.Window, self.color)
@@ -38,16 +39,16 @@ class Dialog(QMainWindow):
         circle_set = QAction("Ustawienia koła", self)
         circle_set.triggered.connect(self.get_sth)
 
+        icon_set = QAction("Ustawianie iconki", self)
+        icon_set.triggered.connect(self.set_another_icon)
+
         menu_bar = self.menuBar()
         file_menu = menu_bar.addMenu('&Dialog')
         file_menu.addAction(self.color_menu)
         file_menu.addAction(circle_set)
+        file_menu.addAction(icon_set)
 
         self.bigWidget.setLayout(grid)
-
-        buzka = FaceDialog(self)
-        buzka.show()
-
         self.show()
 
     def get_sth(self):
@@ -65,6 +66,16 @@ class Dialog(QMainWindow):
         qp.begin(self)
         self.draw_ellipses(qp)
         qp.end()
+
+    def set_another_icon(self):
+        icon_setter = IconDialog()
+        icon_setter.setModal(True)
+        icon_setter.setGeometry(400, 400, 200, 300)
+        icon_setter.setWindowTitle("Wybierz ikone")
+        icon_setter.set_icon(self.actual_picture)
+        result = icon_setter.exec()
+        self.actual_picture = icon_setter.get_icon()
+        self.setWindowIcon(QIcon(self.actual_picture))
 
     def toggle_dialog(self):  # funkcja obsługi elementu menu /pokaż – schowaj dialog
         if self.color_menu.isChecked():
