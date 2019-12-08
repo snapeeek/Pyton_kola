@@ -4,6 +4,7 @@ from PyQt5.QtGui import *
 
 from module import Module
 from module2 import KoloDialog
+from module3 import FaceDialog
 
 class Dialog(QMainWindow):
     fileName = ""
@@ -43,6 +44,9 @@ class Dialog(QMainWindow):
         file_menu.addAction(circle_set)
 
         self.bigWidget.setLayout(grid)
+
+        buzka = FaceDialog(self)
+        buzka.show()
 
         self.show()
 
