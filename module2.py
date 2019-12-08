@@ -23,8 +23,8 @@ class KoloDialog(QDialog):
 
         object_validate = QIntValidator(self)
         object_validate.setRange(0, 255)
-        self.zew = QLabel()
-        self.zew.setText("Na Zewnatrz")
+        self.outside = QLabel()
+        self.outside.setText("Na Zewnatrz")
         self.slider = QSlider(Qt.Horizontal)
         self.slider.setMaximum(255)
         self.slider.setMinimum(0)
@@ -33,8 +33,8 @@ class KoloDialog(QDialog):
         self.line_edit.setValidator(object_validate)
         self.line_edit.textChanged.connect(self.line_edit1_change)
 
-        self.wew = QLabel()
-        self.wew.setText("Wewnatarz")
+        self.inside = QLabel()
+        self.inside.setText("Wewnatarz")
         self.slider2 = QSlider(Qt.Horizontal)
         self.slider2.setMaximum(255)
         self.slider2.setMinimum(0)
@@ -49,31 +49,31 @@ class KoloDialog(QDialog):
         self.podglad.setGeometry(400, 410, 412, 460)
 
         # dodawanie sliderow labeli pol edycyjnych i podgladu do grida
-        grid_layout.addWidget(self.zew, 0, 0)
+        grid_layout.addWidget(self.outside, 0, 0)
         grid_layout.addWidget(self.slider, 0, 1)
         grid_layout.addWidget(self.line_edit, 0, 2)
-        grid_layout.addWidget(self.wew, 1, 0)
+        grid_layout.addWidget(self.inside, 1, 0)
         grid_layout.addWidget(self.slider2, 1, 1)
         grid_layout.addWidget(self.line_edit2, 1, 2)
         grid_layout.addWidget(self.podglad, 0, 3)
 
         # przyciski do aktywacji
-        widgetnaprzyciski = QWidget()
-        layoutnaprzyckiski = QHBoxLayout()
+        button_widget = QWidget()
+        button_layout = QHBoxLayout()
         self.ok = QPushButton()
         self.ok.setText("Ok")
         self.ok.pressed.connect(self.close)
         self.cancel = QPushButton()
         self.cancel.setText("Anuluj")
         self.cancel.pressed.connect(self.revert_changes)
-        layoutnaprzyckiski.addStretch(1)
-        layoutnaprzyckiski.addWidget(self.ok)
-        layoutnaprzyckiski.addWidget(self.cancel)
-        widgetnaprzyciski.setLayout(layoutnaprzyckiski)
+        button_layout.addStretch(1)
+        button_layout.addWidget(self.ok)
+        button_layout.addWidget(self.cancel)
+        button_widget.setLayout(button_layout)
 
         # dodawnie tych wudgetow z layoutami
         big_layout.addWidget(widget_grid)
-        big_layout.addWidget(widgetnaprzyciski)
+        big_layout.addWidget(button_widget)
         self.setLayout(big_layout)
         self.setModal(True)
         self.show()
@@ -90,10 +90,10 @@ class KoloDialog(QDialog):
         qp.setPen(col)
         qp.setBrush(QColor(112, 112, 112, 255))
 
-        mainSize = self.podglad.rect()
-        mainHeight = mainSize.height()
-        mainWidth = mainSize.width()
-        point = QPoint(int(mainWidth / 2) + 400, int(mainHeight / 2) + 70)
+        main_size = self.podglad.rect()
+        main_height = main_size.height()
+        main_width = main_size.width()
+        point = QPoint(int(main_width / 2) + 400, int(main_height / 2) + 70)
 
         qp.drawEllipse(point, int(self.slider.value() * 0.3), int(self.slider.value() * 0.3))
         qp.setBrush(self.color)
@@ -108,35 +108,23 @@ class KoloDialog(QDialog):
         if not value:
             return
         self.slider.setValue(int(value))
-        qp = QPainter()
-        qp.begin(self)
-        self.draw_ellipses(qp)
-        qp.end()
+        self.update()
 
     def slider1_change(self, value):
         self.line_edit.setText(str(value))
-        qp = QPainter()
-        qp.begin(self)
-        self.draw_ellipses(qp)
-        qp.end()
+        self.update()
 
     def line_edit2_change(self, value):
         if not value:
             return
         self.slider2.setValue(int(value))
 
-        qp = QPainter()
-        qp.begin(self)
-        self.draw_ellipses(qp)
-        qp.end()
+        self.update()
         
     def slider2_change(self, value):
         self.line_edit2.setText(str(value))
 
-        qp = QPainter()
-        qp.begin(self)
-        self.draw_ellipses(qp)
-        qp.end()
+        self.update()
         
     def setup_values(self, outside_circle, inside_circle):
         if not outside_circle:

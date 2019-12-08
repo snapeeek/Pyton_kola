@@ -31,7 +31,6 @@ class Dialog(QMainWindow):
         self.dialog.hide()
         self.dialog.changed.connect(self.changed_color)
 
-
         self.color_menu.setCheckable(True)
         self.color_menu.triggered.connect(self.toggle_dialog)
 
@@ -57,6 +56,7 @@ class Dialog(QMainWindow):
         ret = popout.get_result()
         self.outside_circle = int(ret[0])
         self.inside_circle = int(ret[1])
+
         qp = QPainter()
         qp.begin(self)
         self.draw_ellipses(qp)
