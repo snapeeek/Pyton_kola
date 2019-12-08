@@ -8,6 +8,7 @@ class FaceDialog(QDialog):
     def __init__(self, parent=None):
         super(FaceDialog, self).__init__(parent)
         self.setGeometry(400, 300, 150, 150)
+        self.setFixedSize(400,300)
         self.setWindowTitle("Zmiana ikony")
         self.radio_buttons = QButtonGroup()
         self.progress = QProgressBar()
@@ -15,7 +16,6 @@ class FaceDialog(QDialog):
         self.progress.setMaximum(100)
         self.progress.setMinimum(0)
         self.progress.setValue(50)
-        # ten layout na cale okienko
         big_layout = QVBoxLayout()
 
         # widget na suwaki i podglad
@@ -24,7 +24,6 @@ class FaceDialog(QDialog):
         widget_grid.setLayout(grid_layout)
         widget_grid.setGeometry(150, 150, 150, 150)
         widget_grid.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-
 
         radio_button1 = QRadioButton("wesola")
         radio_button1.setChecked(True)
@@ -66,11 +65,24 @@ class FaceDialog(QDialog):
         help_widget_layout.addWidget(self.progress)
         help_widget.setLayout(help_widget_layout)
         help_widget_layout.addWidget(progress_label)
+
+        push_buttons = QButtonGroup()
+        push_button1 = QPushButton("OK")
+        push_button2 = QPushButton("Cancel")
+
+        push_buttons.addButton(push_button1)
+        push_buttons.addButton(push_button2)
+
+        push_buttons_widget = QWidget()
+        push_buttons_widget_layout = QVBoxLayout()
+        push_buttons_widget_layout.addWidget(push_button1)
+        push_buttons_widget_layout.addWidget(push_button2)
+        push_buttons_widget.setLayout(push_buttons_widget_layout)
+
         grid_layout.addWidget(button_widget1, 0, 0)
+        grid_layout.addWidget(push_buttons_widget, 0, 2)
         grid_layout.addWidget(button_widget2, 1, 0)
         grid_layout.addWidget(help_widget, 1, 1)
-
-
 
 
         # dodawnie tych wudgetow z layoutami
